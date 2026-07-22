@@ -1,0 +1,116 @@
+name: Deploy Markdown Site
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Create output directory
+        run: mkdir -p _site
+
+      - name: Copy assets
+        run: |
+          find . -maxdepth 1 \
+            \( -name "*.css" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" -o -name "*.ico" \) \
+            -exec cp {} _site/ \;
+
+      - name: Convert Markdown to HTML
+        run: |
+          find . -name "*.md" \
+            -not -path "./.github/*" \
+            -not -path "./_site/*" \
+            | while read file; do
+
+              rel="${file#./}"
+              dir=$(dirname "$rel")
+              base=$(basename "$rel" .md)
+
+              mkdir -p "_site/$dir"
+
+              pandoc \
+                "$file" \
+                --standalone \
+                --from=gfm \
+                --lua-filter=mermaid.lua \
+                --metadata title="$base" \
+                --css=/style.css \
+                -o "_site/$dir/$base.html"
+
+            done
+
+      - name: Inject Mermaid Script
+        run: |
+          SCRIPT='<script type="module">
+          import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+          mermaid.initialize({startOnLoad:true,theme:"dark"});
+          </script>'
+
+          find _site -name "*.html" | while read file; do
+            sed -i "s|</body>|$SCRIPT</body>|" "$file"
+          done
+
+      - name: Generate Index
+        run: |
+          cat > _site/index.html <<EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <meta charset="UTF-8">
+              <title>Notes</title>
+              <link rel="stylesheet" href="style.css">
+          </head>
+          <body>
+              <h1>Documentation</h1>
+              <ul>
+          EOF
+
+          find _site -name "*.html" ! -name "index.html" | sort | while read file; do
+              rel="${file#_site/}"
+              title=$(basename "$rel" .html)
+              echo "<li><a href=\"$rel\">$title</a></li>" >> _site/index.html
+          done
+
+          cat >> _site/index.html <<EOF
+              </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
