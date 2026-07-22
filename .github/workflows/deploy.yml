@@ -53,23 +53,13 @@ jobs:
                 "$file" \
                 --standalone \
                 --from=gfm \
-                --lua-filter=mermaid.lua \
+                --lua-filter=mermaid/mermaid.lua \
+                --include-after-body=mermaid/mermaid.html \
                 --metadata title="$base" \
                 --css=/style.css \
                 -o "_site/$dir/$base.html"
 
             done
-
-      - name: Inject Mermaid Script
-        run: |
-          SCRIPT='<script type="module">
-          import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-          mermaid.initialize({startOnLoad:true,theme:"dark"});
-          </script>'
-
-          find _site -name "*.html" | while read file; do
-            sed -i "s|</body>|$SCRIPT</body>|" "$file"
-          done
 
       - name: Generate Index
         run: |
