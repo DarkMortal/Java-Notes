@@ -51,7 +51,7 @@ jobs:
 
               pandoc \
                 "$file" \
-                --standalone \
+                --template=templates/default.html \
                 --from=gfm \
                 --highlight-style=breezedark \
                 --lua-filter=deployment/mermaid/mermaid.lua \
