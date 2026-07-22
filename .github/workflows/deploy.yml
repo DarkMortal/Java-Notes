@@ -53,7 +53,7 @@ jobs:
                 "$file" \
                 --standalone \
                 --from=gfm \
-                --highlight-style=github \
+                --highlight-style=breezedark \
                 --lua-filter=deployment/mermaid/mermaid.lua \
                 --include-before-body=deployment/templates/header.html \
                 --include-after-body=deployment/templates/footer.html \
