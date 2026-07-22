@@ -59,7 +59,7 @@ jobs:
                 --include-after-body=deployment/templates/footer.html \
                 --include-after-body=deployment/mermaid/mermaid.html \
                 --metadata title="$base" \
-                --css=deployment/github_style.css \
+                --css=deployment/github_styles.css \
                 -o "_site/$dir/$base.html"
 
             done
@@ -72,7 +72,7 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <title>Documentation</title>
-            <link rel="stylesheet" href="github_style.css">
+            <link rel="stylesheet" href="github_styles.css">
           </head>
           <body>
             <h1>Documentation</h1>
