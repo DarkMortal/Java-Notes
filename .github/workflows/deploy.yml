@@ -72,7 +72,7 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <title>Documentation</title>
-            <link rel="stylesheet" href="github_styles.css">
+            <link rel="stylesheet" href="/Java-Notes/deployment/github_styles.css">
           </head>
           <body>
             <h1>Documentation</h1>
