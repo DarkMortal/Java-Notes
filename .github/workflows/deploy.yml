@@ -53,37 +53,57 @@ jobs:
                 "$file" \
                 --standalone \
                 --from=gfm \
-                --lua-filter=mermaid/mermaid.lua \
-                --include-after-body=mermaid/mermaid.html \
+                --highlight-style=github \
+                --lua-filter=deployment/mermaid/mermaid.lua \
+                --include-before-body=deployment/templates/header.html \
+                --include-after-body=deployment/templates/footer.html \
+                --include-after-body=deployment/mermaid/mermaid.html \
                 --metadata title="$base" \
-                --css=/style.css \
+                --css=deployment/github_style.css \
                 -o "_site/$dir/$base.html"
 
             done
-
+      
       - name: Generate Index
         run: |
           cat > _site/index.html <<EOF
           <!DOCTYPE html>
           <html>
           <head>
-              <meta charset="UTF-8">
-              <title>Notes</title>
-              <link rel="stylesheet" href="style.css">
+            <meta charset="UTF-8">
+            <title>Documentation</title>
+            <link rel="stylesheet" href="github_style.css">
           </head>
           <body>
-              <h1>Documentation</h1>
-              <ul>
+            <h1>Documentation</h1>
           EOF
 
-          find _site -name "*.html" ! -name "index.html" | sort | while read file; do
+          generate_tree() {
+            local dir="$1"
+
+            echo "<ul>" >> _site/index.html
+
+            # Directories first
+            find "$dir" -mindepth 1 -maxdepth 1 -type d | sort | while read subdir; do
+              name=$(basename "$subdir")
+              echo "<li><strong>📁 $name</strong>" >> _site/index.html
+              generate_tree "$subdir"
+              echo "</li>" >> _site/index.html
+            done
+
+            # Then HTML files
+            find "$dir" -mindepth 1 -maxdepth 1 -type f -name "*.html" ! -name "index.html" | sort | while read file; do
               rel="${file#_site/}"
-              title=$(basename "$rel" .html)
-              echo "<li><a href=\"$rel\">$title</a></li>" >> _site/index.html
-          done
+              name=$(basename "$file" .html)
+              echo "<li><a href=\"$rel\">$name</a></li>" >> _site/index.html
+            done
+
+            echo "</ul>" >> _site/index.html
+          }
+
+          generate_tree "_site"
 
           cat >> _site/index.html <<EOF
-              </ul>
           </body>
           </html>
           EOF
