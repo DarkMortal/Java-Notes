@@ -1,15 +1,4 @@
-Semantic workspace search is not currently available
-
-Create File
-
-The file creation tool is disabled, so here is the full document — you can copy it into a new file:
-
----
-
 # Multithreading, Design Patterns & RandomAccessFile — Interview Notes
-
----
-
 ## Key Concepts
 
 ### Multithreading

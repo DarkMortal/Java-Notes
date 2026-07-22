@@ -1,7 +1,4 @@
 # Java Trick Questions — Interview Notes
-
----
-
 ## Key Concepts
 
 - **Trick questions** target assumptions candidates carry from other languages or from surface-level Java knowledge. The correct answer is almost always "it depends" or "not exactly".

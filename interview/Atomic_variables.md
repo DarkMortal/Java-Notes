@@ -1,7 +1,4 @@
 # Atomic Variables & Reflection API — Interview Notes
-
----
-
 ## Key Concepts
 
 ### Atomic Variables

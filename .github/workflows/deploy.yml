@@ -59,7 +59,6 @@ jobs:
                 --include-after-body=deployment/templates/footer.html \
                 --include-after-body=deployment/mermaid/mermaid.html \
                 --metadata title="$base" \
-                --css=deployment/github_styles.css \
                 -o "_site/$dir/$base.html"
 
             done
@@ -72,7 +71,7 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <title>Documentation</title>
-            <link rel="stylesheet" href="/Java-Notes/deployment/github_styles.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.9.0/github-markdown.min.css" integrity="sha512-Ouq1+UcR9ENXndFyd/YA9i+ETLJmX3WoaMBF/nDzdqJbipKGL/SAbkO+qjDoxfD/dhZs4ZqgR9vXkolrK77xmQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
           </head>
           <body>
             <h1>Documentation</h1>
