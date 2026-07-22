@@ -69,12 +69,28 @@ jobs:
           <!DOCTYPE html>
           <html>
           <head>
-            <meta charset="UTF-8">
-            <title>Documentation</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Java notes</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.9.0/github-markdown.min.css" integrity="sha512-Ouq1+UcR9ENXndFyd/YA9i+ETLJmX3WoaMBF/nDzdqJbipKGL/SAbkO+qjDoxfD/dhZs4ZqgR9vXkolrK77xmQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-          </head>
+            <style>
+              html, body {
+                font-family: Arial, sans-serif;
+                width: 95vw;
+                height: fit-content;
+                overflow: auto;
+                
+                padding-top: 10px;
+                padding-bottom: 10px;
+                
+                align-self: center;
+                justify-self: center;
+                background-color: #0d1117;
+              }
+            </style>
+            </head>
           <body>
-            <h1>Documentation</h1>
+            <article class="markdown-body"><h1>Documentation</h1>
           EOF
 
           generate_tree() {
@@ -103,7 +119,7 @@ jobs:
           generate_tree "_site"
 
           cat >> _site/index.html <<EOF
-          </body>
+          </body></article>
           </html>
           EOF
 
