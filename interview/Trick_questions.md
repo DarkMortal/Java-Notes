@@ -57,6 +57,9 @@ String c = new String("hello"); // new heap object → a == c is FALSE
 
 ### Conceptual Questions
 
+**Q: Why is the `main` method static?**
+> **A:** The `main` method is the entry-point of the entire java program. At the start of the program, no object is created in the JVM. So in order to invoke the `main` method, it needs to be `static` so that the JVM can invoke it without creating an object or instance of the `Main` class.
+
 **Q: Is Java a fully object-oriented language?**
 > **A:** No. Java has **eight primitive types** (`int`, `long`, `double`, `float`, `boolean`, `byte`, `short`, `char`) that are not objects — they have no methods and do not inherit from `Object`. A purely OO language (like Smalltalk or Ruby) has no such primitives. Java also allows `static` methods and fields, which belong to the class rather than any instance. Autoboxing (Java 5+) wraps primitives into objects automatically, but the primitives themselves remain.
 
